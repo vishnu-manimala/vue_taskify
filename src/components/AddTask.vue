@@ -27,7 +27,8 @@
     </v-form>
   </template>
   <script>
- //import { mapMutations } from 'vuex'
+  import { addDoc } from "firebase/firestore";
+  import { taskRef } from "../store/firebase";
 
     export default {
       name:"AddTask",
@@ -42,10 +43,13 @@
          toggleMarker () {
           this.marker = !this.marker
         },
-         sendMessage () {
-          const id =  Math.random();
-          console.log(id);
-          this.$store.commit('addTodo',this.task,id)
+        async sendMessage () {
+          const data = this.task;
+          const newDocument = { id: Math.round(Math.random() * 100), task:this.task, completed: false, important: false };
+
+        await addDoc(taskRef, newDocument);
+        console.log(data);
+          this.$store.commit('addTodo',data)
           //this.addTask(Math.random(),this.task)
           this.clearMessage()
         },

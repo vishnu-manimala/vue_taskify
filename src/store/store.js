@@ -1,4 +1,6 @@
 import { createStore } from 'vuex';
+import { useCollection } from "vuefire";
+import { taskRef } from "./firebase";
 
 export const store = createStore({
     state: {
@@ -51,5 +53,14 @@ export const store = createStore({
             const importantTodo = state.todos.filter(item => item.important === true);
             return importantTodo;
         }
-      }
+      },
+
+      actions:{
+        getTodos({ commit }) {
+            console.log("action")
+            const documents = useCollection(taskRef);
+            commit('updateTodos', documents)
+          },
+       
+    }
   });
