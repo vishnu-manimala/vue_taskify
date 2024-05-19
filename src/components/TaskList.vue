@@ -3,7 +3,7 @@
         <v-container id="taskInput">
             <v-row>
                 <v-col cols="12">
-                    <v-card class="mx-auto pa-3 ma-2 text-center" max-width="75%">
+                    <v-card class="mx-auto pa-3 ma-2 text-center" max-width="75%" v-for="todo in todos" :key="todo.task">
                         <v-row>
 
                             <v-col cols="2">
@@ -13,7 +13,7 @@
                             </v-col>
                             <v-col cols="8">
                                 <v-list-item-title class="headline mb-1"
-                                    id="task">jkhksjbcfkjsdfksdjfsdk</v-list-item-title>
+                                    id="task">{{ todo.task }}</v-list-item-title>
                             </v-col>
                             <v-col cols="1">
 
@@ -30,7 +30,23 @@
 </template>
 <script>
 export default {
-    name: "TaskList"
+    name: "TaskList",
+    data(){
+        return {
+            todos:[
+                {
+                    task: 'learn Vue JS',
+                    completed: false,
+                    important: false,
+                },
+                {
+                    task: 'learn VueX',
+                    completed: false,
+                    important: false,
+                }
+            ]
+        }
+    }
 }
 </script>
 <style scoped>
