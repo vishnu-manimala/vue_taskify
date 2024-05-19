@@ -1,15 +1,14 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <TodoLayout />
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import TodoLayout from './layouts/TodoLayout.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    TodoLayout
   }
 }
 </script>
