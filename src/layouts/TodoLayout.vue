@@ -22,21 +22,23 @@
   
         <SideBarVue  v-model="drawer" />
   
-        <v-main style="height: 500px;">
+        <v-main style="height: 500px; border-radius: 30px;">
           <v-card-text>
-            The navigation drawer will appear from the bottom on smaller size screens.
+           <AddTaskVue/>
           </v-card-text>
         </v-main>
       </v-layout>
     </v-card>
   </template>
   <script>
+import AddTaskVue from '@/components/AddTask.vue'
 import SideBarVue from './SideBar.vue'
 
     export default {
       name:"TodoLayout",
       components:{
-        SideBarVue
+        SideBarVue,
+        AddTaskVue
       } ,
       data: () => ({
         drawer: false,
