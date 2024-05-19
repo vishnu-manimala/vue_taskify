@@ -8,6 +8,8 @@ import { aliases, mdi } from "vuetify/lib/iconsets/mdi";
 import * as components from 'vuetify/components';
 import * as directives from 'vuetify/directives';
 import "@mdi/font/css/materialdesignicons.css";
+import { store } from './store/store.js'
+
 
 //vuetify config
 const vuetify = createVuetify(
@@ -26,4 +28,7 @@ const vuetify = createVuetify(
     }
 );
 
-createApp(App).use(vuetify).mount('#app')
+const app = createApp(App)
+    app.use(store);
+    app.use(vuetify);
+    app.mount('#app');

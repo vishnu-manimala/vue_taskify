@@ -27,6 +27,8 @@
     </v-form>
   </template>
   <script>
+ //import { mapMutations } from 'vuex'
+
     export default {
       name:"AddTask",
       data: () => ({
@@ -36,32 +38,22 @@
         
       }),
 
-  
-      computed: {
-        icon () {
-          return this.icons[this.iconIndex]
-        },
-      },
-  
       methods: {
-        toggleMarker () {
+         toggleMarker () {
           this.marker = !this.marker
         },
-        sendMessage () {
-          this.resetIcon()
+         sendMessage () {
+          const id =  Math.random();
+          console.log(id);
+          this.$store.commit('addTodo',this.task,id)
+          //this.addTask(Math.random(),this.task)
           this.clearMessage()
         },
         clearMessage () {
           this.task = ''
         },
-        resetIcon () {
-          this.iconIndex = 0
-        },
-        changeIcon () {
-          this.iconIndex === this.icons.length - 1
-            ? this.iconIndex = 0
-            : this.iconIndex++
-        },
+       
+        
       },
     }
   </script>
