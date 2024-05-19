@@ -20,11 +20,7 @@
                                 <v-icon color="indigo lighten-4">mdi-star-outline</v-icon>
 
                             </v-col>
-                            <v-col cols="1">
-
-                                <v-icon color="red lighten-5">mdi-delete</v-icon>
-
-                            </v-col>
+                        
                         </v-row>
                     </v-card>
                 </v-col>
@@ -42,4 +38,5 @@ export default {
     display: flex;
     justify-content: flex-start;
 }
+
 </style>
