@@ -1,66 +1,88 @@
 import { createStore } from 'vuex';
 import { useCollection } from "vuefire";
-import { taskRef } from "./firebase";
+import { db, taskRef } from "./firebase";
+import { updateDoc, doc, addDoc } from "firebase/firestore";
+import { Vuex } from 'vuex'
 
 export const store = createStore({
-    state: {
-        count: 0,
-        todos: [],
-      },
+  state: {
+    todos: [],
+  },
 
-      mutations: {
-        addTodo(state,task){
-            
-            state.count = state.count+1;
-            state.todos = [
-                ...state.todos,
-                {   
-                    id:state.count,
-                    task,
-                    completed: false,
-                    important: false,
-                }
-            ]
-            console.log(state.todos)
-        },
-        updateImportant(state,id){
-            state.todoList = state.todoList.map((item) => {
-                if (item.id === id) {
-                  item.important = !item.important;
-                }
-                return item;
-              });
-        },
-        updateCompleted(state,id){
-            state.todoList = state.todoList.map((item) => {
-                if (item.id === id) {
-                  item.completed = !item.completed;
-                }
-                return item;
-              });
-        },
-        updateTodos(state,todos){
-            state.todos = todos
+  mutations: {
+
+    addTodo(state, todo) {
+      Vuex.set(state.todos, state.todos.length, todo);
+    },
+
+    updateImportant(state, todo) {
+      state.todos = state.todos.map((item) => {
+        if (item.id === todo.id) {
+          item.important = !item.important;
+          item.updatedAt = Date.now();
         }
-      },
+        return item;
+      });
 
-      getters: {
-        completedTodos: (state)=>{
-            const completedTodo = state.todos.filter(item=> item.completed === true);
-            return completedTodo;
-        },
-        importantTodos: (state)=>{
-            const importantTodo = state.todos.filter(item => item.important === true);
-            return importantTodo;
+    },
+
+    updateCompleted(state, todo) {
+
+      state.todos = state.todos.map((item) => {
+        if (item.id === todo.id) {
+          item.completed = !item.completed;
+          item.updatedAt = Date.now();
         }
-      },
 
-      actions:{
-        getTodos({ commit }) {
-            console.log("action")
-            const documents = useCollection(taskRef);
-            commit('updateTodos', documents)
-          },
-       
+        return item;
+      });
+
+    },
+
+    updateTodos(state, todos) {
+
+      state.todos = todos
     }
-  });
+  },
+
+  getters: {
+    completedTodos: (state) => {
+      const completedTodo = state.todos.filter(item => item.completed === true);
+      return completedTodo;
+    },
+    importantTodos: (state) => {
+      const importantTodo = state.todos.filter(item => item.important === true);
+      return importantTodo;
+    }
+  },
+
+  actions: {
+    getTodos({ commit }) {
+      const documents = useCollection(taskRef);
+      commit('updateTodos', documents)
+    },
+    
+    async updateFirebseComplete({ commit }, todo) {
+      
+      todo.completed = !todo.completed;
+      console.log(todo);
+      const docRef = doc(db, "tasks", todo.id);
+      await updateDoc(docRef, todo);
+      commit('updateCompleted', todo)
+    },
+
+    async saveTodoFirebase({ commit }, task) {
+
+      await addDoc(taskRef, task);
+      commit('addTodo', task);
+
+    },
+
+    async updateFirebseImportant({commit}, todo){
+      todo.important = !todo.important;
+      const docref = doc(db, 'tasks', todo);
+      await updateDoc(docref, todo);
+      commit('updateImportant', todo);
+    }
+  }
+});

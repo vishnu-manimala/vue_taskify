@@ -21,8 +21,9 @@
       <SideBarVue v-model="drawer" /> 
 
       <!-- main -->
-      <v-main style="height: 500px; border-radius: 30px;">
-        <v-card-text>
+      <v-main style="height: 600px; border-radius: 30px;">
+        
+        <v-card-text >
           <TaskListVue/>
           <AddTaskVue />
         </v-card-text>

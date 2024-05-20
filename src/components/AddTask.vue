@@ -27,8 +27,7 @@
     </v-form>
   </template>
   <script>
-  import { addDoc } from "firebase/firestore";
-  import { taskRef } from "../store/firebase";
+import { store } from '../store/store'
 
     export default {
       name:"AddTask",
@@ -36,29 +35,25 @@
         task: 'Type your task!',
         marker: true,
         iconIndex: 0,
-        
+      
       }),
 
       methods: {
          toggleMarker () {
           this.marker = !this.marker
         },
-        async sendMessage () {
-          const data = this.task;
-          const newDocument = { id: Math.round(Math.random() * 100), task:this.task, completed: false, important: false };
+        sendMessage () {
+        
+          const newDocument = {id:Math.round(Math.random() * 100), task:this.task, completed: false, important: false,createdAt: Date.now(), updatedAt: null };
 
-        await addDoc(taskRef, newDocument);
-        console.log(data);
-          this.$store.commit('addTodo',data)
-          //this.addTask(Math.random(),this.task)
+          store.dispatch('saveTodoFirebase',newDocument)
           this.clearMessage()
         },
         clearMessage () {
           this.task = ''
         },
-       
-        
       },
+      
     }
   </script>
   <style scoped>
@@ -69,6 +64,7 @@
     transform: translateX(-50%); 
     width: 75%; 
     align-items: center;
+    margin-top: 10px;
     }
    
   </style>
