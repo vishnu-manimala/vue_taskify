@@ -1,7 +1,7 @@
 import { createStore } from 'vuex';
 import { useCollection } from "vuefire";
 import { db, taskRef } from "./firebase";
-import { updateDoc, doc, addDoc } from "firebase/firestore";
+import { updateDoc, doc, addDoc, deleteDoc } from "firebase/firestore";
 import { Vuex } from 'vuex'
 
 export const store = createStore({
@@ -42,9 +42,15 @@ export const store = createStore({
     updateTodos(state, todos) {
 
       state.todos = todos
-    }
-  },
+    },
 
+    todoDelete(state, todo){
+      const index = state.todos.findIndex(item => item.id === todo.id);
+      if (index !== -1) {
+        state.todos.splice(index, 1); 
+      }
+  },
+  },
   getters: {
     completedTodos: (state) => {
       const completedTodo = state.todos.filter(item => item.completed === true);
@@ -83,6 +89,11 @@ export const store = createStore({
       const docref = doc(db, 'tasks', todo);
       await updateDoc(docref, todo);
       commit('updateImportant', todo);
+    },
+
+    async deleteTodo( {commit}, todo){
+      await deleteDoc(doc(db, "taks", todo.id));
+      commit('todoDelete', todo);
     }
   }
 });

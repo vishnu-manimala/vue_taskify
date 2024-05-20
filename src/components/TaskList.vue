@@ -27,6 +27,9 @@
                                     <v-icon color="indigo lighten-4" v-if="!todo.important" @click="addToImportant(todo)">mdi-star-outline</v-icon>
                                     <v-icon color="yellow darken-2" v-else-if="todo.important" @click="addToImportant(todo)">mdi-star</v-icon>
                                 </v-col>
+                                <v-col cols="1">
+                                    <v-icon color="red" v-if="!todo.important" @click="deleteTodo(todo)">mdi-delete</v-icon>
+                                </v-col>
                             </v-row>
                         </v-card>
                     </div>
@@ -57,6 +60,10 @@ export default {
     addToImportant(todo){
         console.log(todo);
         store.dispatch('updateFirebseImportant', todo);
+    },
+
+    deleteTodo(todo){
+        store.dispatch('deleteTodo', todo);
     }
   },
     computed: {
